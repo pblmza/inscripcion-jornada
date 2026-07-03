@@ -170,6 +170,9 @@
         <option value="Online">Online</option>
       </select>
       <div class="cupos" id="infoCupos"></div>
+      <div class="ayuda" id="avisoOnline" style="display:none; margin-top:6px; background:#eaf0f8; border:1px solid var(--azul-claro); border-radius:8px; padding:8px 10px; color:var(--azul-oscuro);">
+        📩 Si te inscribes en modalidad <strong>online</strong>, más adelante te enviaremos a tu correo el link de conexión a la jornada.
+      </div>
       <div class="error-msg">Selecciona una modalidad.</div>
     </div>
 
@@ -213,6 +216,11 @@ const btn = document.getElementById("btnEnviar");
 const rutInput = document.getElementById("rut");
 const selModalidad = document.getElementById("modalidad");
 const infoCupos = document.getElementById("infoCupos");
+const avisoOnline = document.getElementById("avisoOnline");
+
+selModalidad.addEventListener("change", () => {
+  avisoOnline.style.display = selModalidad.value === "Online" ? "block" : "none";
+});
 
 // ---- Validación y formato de RUT chileno ----
 function limpiarRut(v) {
@@ -314,8 +322,13 @@ form.addEventListener("submit", async (ev) => {
     const r = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(datos) });
     const res = await r.json();
     if (res.ok) {
-      mostrarAviso("exito", `¡Inscripción exitosa! Quedaste registrado/a en modalidad ${datos.modalidad}.`);
+      let msg = `¡Inscripción exitosa! Quedaste registrado/a en modalidad ${datos.modalidad}.`;
+      if (datos.modalidad === "Online") {
+        msg += " Más adelante te enviaremos a tu correo el link de conexión a la jornada.";
+      }
+      mostrarAviso("exito", msg);
       form.reset();
+      avisoOnline.style.display = "none";
       consultarCupos();
     } else {
       mostrarAviso("fallo", res.error || "No se pudo completar la inscripción. Intenta nuevamente.");
