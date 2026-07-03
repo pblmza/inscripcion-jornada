@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscripción · VI Jornada de Psiquiatría de Enlace · Hospital Barros Luco</title>
+<style>
+  :root {
+    --azul-oscuro: #1e3a5f;
+    --azul-medio: #4a72a3;
+    --azul-claro: #8fa9c9;
+    --fondo: #dfe6ef;
+    --blanco: #f4f7fb;
+    --error: #c0392b;
+    --ok: #1e7e34;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    background: var(--fondo);
+    color: var(--azul-oscuro);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 24px 12px;
+  }
+  .tarjeta {
+    background: var(--blanco);
+    border-radius: 18px;
+    max-width: 560px;
+    width: 100%;
+    box-shadow: 0 8px 30px rgba(30,58,95,.18);
+    overflow: hidden;
+  }
+  header {
+    background: var(--azul-medio);
+    color: #fff;
+    padding: 28px 32px;
+    text-align: center;
+  }
+  header h1 {
+    font-size: 1.45rem;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+  header p { margin-top: 8px; font-size: .95rem; opacity: .95; }
+  header .fecha {
+    display: inline-block;
+    margin-top: 12px;
+    background: rgba(255,255,255,.15);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: .85rem;
+  }
+  form { padding: 28px 32px 32px; }
+  .campo { margin-bottom: 18px; }
+  label {
+    display: block;
+    font-weight: 600;
+    font-size: .9rem;
+    margin-bottom: 6px;
+  }
+  label .req { color: var(--error); }
+  input, select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1.5px solid var(--azul-claro);
+    border-radius: 9px;
+    font-size: 1rem;
+    background: #fff;
+    color: var(--azul-oscuro);
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--azul-medio);
+    box-shadow: 0 0 0 3px rgba(74,114,163,.2);
+  }
+  .ayuda { font-size: .78rem; color: #5a6f88; margin-top: 4px; }
+  .error-msg { font-size: .8rem; color: var(--error); margin-top: 4px; display: none; }
+  .campo.invalido input { border-color: var(--error); }
+  .campo.invalido .error-msg { display: block; }
+  .cupos {
+    font-size: .8rem;
+    margin-top: 4px;
+    color: var(--azul-medio);
+    font-weight: 600;
+  }
+  button {
+    width: 100%;
+    background: var(--azul-oscuro);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: .5px;
+    margin-top: 6px;
+  }
+  button:hover { background: var(--azul-medio); }
+  button:disabled { background: var(--azul-claro); cursor: not-allowed; }
+  .aviso {
+    display: none;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    font-size: .92rem;
+    line-height: 1.4;
+  }
+  .aviso.exito { display: block; background: #e2f3e6; color: var(--ok); border: 1px solid #b7dfc0; }
+  .aviso.fallo { display: block; background: #fbe4e1; color: var(--error); border: 1px solid #f0c0ba; }
+  footer {
+    text-align: center;
+    font-size: .75rem;
+    color: #5a6f88;
+    padding: 0 32px 26px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<div class="tarjeta">
+  <header>
+    <h1>VI Jornada de Psiquiatría de Enlace</h1>
+    <p>Hospital Barros Luco · Modalidad híbrida</p>
+    <span class="fecha">Martes 28 de julio 2026 · 8:30 – 13:30 · Auditorio Biblioteca Nicanor Parra, Vergara 324, Santiago</span>
+  </header>
+
+  <form id="formulario" novalidate>
+    <div class="aviso" id="aviso"></div>
+
+    <div class="campo">
+      <label for="nombre">Nombre completo <span class="req">*</span></label>
+      <input type="text" id="nombre" name="nombre" required autocomplete="given-name">
+      <div class="error-msg">Ingresa tu nombre.</div>
+    </div>
+
+    <div class="campo">
+      <label for="apellidoPaterno">Apellido paterno <span class="req">*</span></label>
+      <input type="text" id="apellidoPaterno" name="apellidoPaterno" required autocomplete="family-name">
+      <div class="error-msg">Ingresa tu apellido paterno.</div>
+    </div>
+
+    <div class="campo">
+      <label for="apellidoMaterno">Apellido materno <span class="req">*</span></label>
+      <input type="text" id="apellidoMaterno" name="apellidoMaterno" required>
+      <div class="error-msg">Ingresa tu apellido materno.</div>
+    </div>
+
+    <div class="campo" id="campoRut">
+      <label for="rut">RUT <span class="req">*</span></label>
+      <input type="text" id="rut" name="rut" placeholder="12.345.678-9" required inputmode="text" maxlength="12">
+      <div class="ayuda">Se valida el dígito verificador automáticamente.</div>
+      <div class="error-msg" id="errorRut">RUT inválido. Revisa el dígito verificador.</div>
+    </div>
+
+    <div class="campo">
+      <label for="modalidad">Modalidad <span class="req">*</span></label>
+      <select id="modalidad" name="modalidad" required>
+        <option value="" disabled selected>Selecciona una modalidad…</option>
+        <option value="Presencial">Presencial (cupos limitados)</option>
+        <option value="Online">Online</option>
+      </select>
+      <div class="cupos" id="infoCupos"></div>
+      <div class="error-msg">Selecciona una modalidad.</div>
+    </div>
+
+    <div class="campo">
+      <label for="estamento">Estamento <span class="req">*</span></label>
+      <select id="estamento" name="estamento" required>
+        <option value="" disabled selected>Selecciona tu estamento…</option>
+        <option>Médico/a</option>
+        <option>Psicólogo/a</option>
+        <option>Enfermero/a</option>
+        <option>Otro profesional de la salud</option>
+        <option>Técnico</option>
+        <option>Estudiante</option>
+        <option>Otro</option>
+      </select>
+      <div class="error-msg">Selecciona tu estamento.</div>
+    </div>
+
+    <div class="campo">
+      <label for="institucion">Institución <span class="req">*</span></label>
+      <input type="text" id="institucion" name="institucion" required placeholder="Ej: Hospital Barros Luco Trudeau">
+      <div class="error-msg">Ingresa tu institución.</div>
+    </div>
+
+    <button type="submit" id="btnEnviar">Inscribirme</button>
+  </form>
+
+  <footer>
+    Organiza Unidad de Psiquiatría de Enlace, Psicología de la Salud y Medicina Psicosomática · Hospital Barros Luco<br>
+    Patrocinan SONEPSYN y Universidad Mayor · Auspicia Universidad Diego Portales
+  </footer>
+</div>
+
+<script>
+// ⚠️ PEGA AQUÍ LA URL DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT (ver INSTRUCCIONES.md)
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIJDc8Uiz5yH-NXlNsJjk5VTf_7jUmLerzAzQVAuHsqc3G1ospmxTNx0SZqGWIRkT9Vw/exec";
+
+const form = document.getElementById("formulario");
+const aviso = document.getElementById("aviso");
+const btn = document.getElementById("btnEnviar");
+const rutInput = document.getElementById("rut");
+const selModalidad = document.getElementById("modalidad");
+const infoCupos = document.getElementById("infoCupos");
+
+// ---- Validación y formato de RUT chileno ----
+function limpiarRut(v) {
+  return v.replace(/[^0-9kK]/g, "").toUpperCase();
+}
+function formatearRut(v) {
+  const limpio = limpiarRut(v);
+  if (limpio.length < 2) return limpio;
+  const cuerpo = limpio.slice(0, -1);
+  const dv = limpio.slice(-1);
+  return cuerpo.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "-" + dv;
+}
+function validarRut(v) {
+  const limpio = limpiarRut(v);
+  if (limpio.length < 8 || limpio.length > 9) return false;
+  const cuerpo = limpio.slice(0, -1);
+  const dv = limpio.slice(-1);
+  if (!/^\d+$/.test(cuerpo)) return false;
+  let suma = 0, mul = 2;
+  for (let i = cuerpo.length - 1; i >= 0; i--) {
+    suma += parseInt(cuerpo[i], 10) * mul;
+    mul = mul === 7 ? 2 : mul + 1;
+  }
+  const resto = 11 - (suma % 11);
+  const dvEsperado = resto === 11 ? "0" : resto === 10 ? "K" : String(resto);
+  return dv === dvEsperado;
+}
+rutInput.addEventListener("input", () => {
+  rutInput.value = formatearRut(rutInput.value);
+  document.getElementById("campoRut").classList.remove("invalido");
+});
+rutInput.addEventListener("blur", () => {
+  if (rutInput.value && !validarRut(rutInput.value)) {
+    document.getElementById("campoRut").classList.add("invalido");
+  }
+});
+
+// ---- Cupos presenciales ----
+async function consultarCupos() {
+  if (SCRIPT_URL.startsWith("PEGAR")) return;
+  try {
+    const r = await fetch(SCRIPT_URL + "?action=cupos");
+    const d = await r.json();
+    const disp = d.presencialDisponible;
+    const opt = selModalidad.querySelector('option[value="Presencial"]');
+    if (disp <= 0) {
+      opt.disabled = true;
+      opt.textContent = "Presencial (CUPOS AGOTADOS)";
+      infoCupos.textContent = "Los cupos presenciales están agotados. Puedes inscribirte en modalidad online.";
+    } else {
+      infoCupos.textContent = `Cupos presenciales disponibles: ${disp} de ${d.cuposPresencial}`;
+    }
+  } catch (e) { /* silencioso: el servidor valida igual */ }
+}
+consultarCupos();
+
+// ---- Envío ----
+function mostrarAviso(tipo, msg) {
+  aviso.className = "aviso " + tipo;
+  aviso.textContent = msg;
+  aviso.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+form.addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  let valido = true;
+  form.querySelectorAll(".campo").forEach(c => c.classList.remove("invalido"));
+  form.querySelectorAll("input[required], select[required]").forEach(el => {
+    if (!el.value.trim()) { el.closest(".campo").classList.add("invalido"); valido = false; }
+  });
+  if (rutInput.value && !validarRut(rutInput.value)) {
+    document.getElementById("campoRut").classList.add("invalido");
+    valido = false;
+  }
+  if (!valido) return;
+
+  if (SCRIPT_URL.startsWith("PEGAR")) {
+    mostrarAviso("fallo", "El formulario aún no está conectado a la hoja de cálculo. Falta configurar la URL del Apps Script (ver INSTRUCCIONES.md).");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Enviando…";
+  const datos = {
+    nombre: form.nombre.value.trim(),
+    apellidoPaterno: form.apellidoPaterno.value.trim(),
+    apellidoMaterno: form.apellidoMaterno.value.trim(),
+    rut: formatearRut(rutInput.value),
+    modalidad: form.modalidad.value,
+    estamento: form.estamento.value,
+    institucion: form.institucion.value.trim()
+  };
+  try {
+    const r = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(datos) });
+    const res = await r.json();
+    if (res.ok) {
+      mostrarAviso("exito", `¡Inscripción exitosa! Quedaste registrado/a en modalidad ${datos.modalidad}.`);
+      form.reset();
+      consultarCupos();
+    } else {
+      mostrarAviso("fallo", res.error || "No se pudo completar la inscripción. Intenta nuevamente.");
+      consultarCupos();
+    }
+  } catch (e) {
+    mostrarAviso("fallo", "Error de conexión. Intenta nuevamente en unos minutos.");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Inscribirme";
+  }
+});
+</script>
+</body>
+</html>
